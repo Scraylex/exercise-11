@@ -20,18 +20,15 @@ repositories {
 
     maven { url "https://raw.github.com/jacamo-lang/mvn-repo/master" }
     maven { url 'https://jitpack.io' }
-    //maven { url "http://jacamo.sourceforge.net/maven2" }
-    //maven { url "https://jade.tilab.com/maven/" }
-    //flatDir {  dirs 'lib' }
 }
 
 dependencies {
     implementation group: 'com.google.guava', name: 'guava', version: '23.5-jre'
     implementation group: 'org.jacamo',     name: 'jacamo' ,   version: '0.9'
-    implementation 'com.github.Interactions-HSG:wot-td-java:v0.1.2'
+    implementation 'com.github.Interactions-HSG:wot-td-java:master-SNAPSHOT'
     implementation 'org.apache.httpcomponents.client5:httpclient5:5.0'
     implementation 'org.apache.httpcomponents.client5:httpclient5-fluent:5.0'
-  //  implementation group: 'com.google.common', name: 'google-collect', version: '0.5'
+    implementation 'com.google.code.gson:gson:2.10.1'
 }
 
 sourceSets {

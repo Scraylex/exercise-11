@@ -68,7 +68,7 @@ public class ThingArtifact extends Artifact {
       td = TDGraphReader.readFromURL(TDFormat.RDF_TURTLE, url);
 
       for (SecurityScheme scheme : td.getSecuritySchemes()) {
-        defineObsProperty("securityScheme", scheme.getSchemeType());
+        defineObsProperty("securityScheme", scheme.getConfiguration());
       }
 
       exposeWebSubIRIs(url);
