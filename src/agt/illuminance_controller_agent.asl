@@ -40,11 +40,31 @@ task_requirements([2,3]).
 
   // creates a ThingArtifact artifact for reading and acting on the state of the lab Thing
   makeArtifact("lab", "wot.ThingArtifact", [Url], LabArtId);
-  
-  // example use of the getActionFromState operation of the QLearner artifact
-  // relevant for Task 2.3
-  getActionFromState([1,1], [0, 0, false, false, false, false, 3], ActionTag, PayloadTags, Payload);
+  // goalDescription, episodes, alphaObj, gamma, epsilon, reward
+  calculateQ([2,3], 50, 0.2, 0.8, 0.2, 100)[artifact_id(QLArtId)];
+  getCurrentZLevels(CurrentZLevels)[artifact_id(QLArtId)] ;
+  +current_zlevels(CurrentZLevels);
+  getCurrentLabState(CurrentLabState);
+  !take_action(CurrentLabState).
 
-  // example use of the invokeAction operation of the ThingArtifact 
-  //invokeAction(ActionTag, PayloadTags, Payload)
-  .
+@take_action_plan
++!take_action(CurrentLabState): current_zlevels([CurrentZ1,CurrentZ2]) 
+& task_requirements([TargetZ1,TargetZ2]) & CurrentZ1 == TargetZ1 & CurrentZ2 == TargetZ2 <-
+  .print("Target achieved").
+
+@take_action_loop_plan
++!take_action(CurrentLabState): true <-
+  .print("current Full State: ", CurrentLabState);
+  getActionFromState([2,1], CurrentLabState, ActionTag, PayloadTags, Payload);
+  invokeAction(ActionTag, PayloadTags, Payload);
+  !get_new_state.
+
+@get_new_state_plan
++!get_new_state: true <-
+  .abolish(current_zlevels(_));
+  getCurrentZLevels(NewZLevels)[artifact_id(QLArtId)] ;
+  +current_zlevels(NewZLevels);
+  .print("New zlevels: ", NewZLevels);
+  getCurrentLabState(NewLabState);
+  .wait(1000);
+  !take_action(NewLabState).
